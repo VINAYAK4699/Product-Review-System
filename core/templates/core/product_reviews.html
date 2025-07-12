@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reviews - {{ product.name }}</title>
+</head>
+<body>
+<h2>Reviews for {{ product.name }}</h2>
+
+{% if messages %}
+  {% for message in messages %}
+    <p style="color: green;">{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
+<!-- Review List -->
+{% if reviews %}
+    <ul>
+    {% for review in reviews %}
+        <li>
+            ⭐ {{ review.rating }} – <strong>{{ review.user.username }}</strong><br>
+            {{ review.comment|linebreaks }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No reviews yet.</p>
+{% endif %}
+
+<hr>
+
+<!-- Add Review -->
+{% if form %}
+    <h3>Add Your Review</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+{% else %}
+    <p style="color: grey;">You have already reviewed this product.</p>
+{% endif %}
+
+<a href="{% url 'user_page' %}">← Back to Products</a>
+</body>
+</html>
